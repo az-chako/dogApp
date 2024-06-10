@@ -31,7 +31,7 @@ class BreedImageViewController: UIViewController,UICollectionViewDataSource, UIC
         }
         
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
-            if let error = error {
+            if error != nil {
                 return
             }
             
@@ -98,10 +98,13 @@ class BreedImageViewController: UIViewController,UICollectionViewDataSource, UIC
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let storybord = UIStoryboard(name: "Main", bundle: nil)
-        if let imageDisplayVC = storyboard?.instantiateViewController(withIdentifier: "ImageDisplayViewController") as? ImageDisplayViewController {
-            imageDisplayVC.imageUrl = dogImages[indexPath.row]
-            navigationController?.pushViewController(imageDisplayVC, animated: true)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showImageDetail" {
+            if let destinationVC = segue.destination as? ImageDisplayViewController, let indexPath = collectionView.indexPathsForSelectedItems?.first  {
+                destinationVC.imageUrl = dogImages[indexPath.row]
+            }
         }
     }
 }

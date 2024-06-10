@@ -18,6 +18,8 @@ class ImageDisplayViewController: UIViewController {
         if let imageUrl = imageUrl {
             displayImage(from: imageUrl)
         }
+        
+        
     }
     
     func displayImage(from url: String) {

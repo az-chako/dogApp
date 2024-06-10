@@ -91,6 +91,7 @@
                                         </collectionViewCellContentView>
                                         <connections>
                                             <outlet property="imageView" destination="tGz-L7-9xO" id="JW3-bs-J57"/>
+                                            <segue destination="M9A-c1-Jek" kind="show" identifier="showImageDetail" id="nf1-qg-lP2"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
@@ -123,7 +124,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="mHP-Tb-b7b">
-                                <rect key="frame" x="98.333333333333329" y="327.66666666666669" width="196.33333333333337" height="196.66666666666669"/>
+                                <rect key="frame" x="0.0" y="229.66666666666663" width="393" height="393"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="mHP-Tb-b7b" secondAttribute="height" multiplier="1:1" id="kYt-YX-yrE"/>
                                 </constraints>
@@ -132,7 +133,7 @@
                         <viewLayoutGuide key="safeArea" id="IMU-AK-vZj"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="mHP-Tb-b7b" firstAttribute="width" secondItem="x2q-rH-kr4" secondAttribute="width" multiplier="0.5" id="3jJ-Wr-ll2"/>
+                            <constraint firstItem="mHP-Tb-b7b" firstAttribute="width" secondItem="x2q-rH-kr4" secondAttribute="width" id="3jJ-Wr-ll2"/>
                             <constraint firstItem="mHP-Tb-b7b" firstAttribute="centerX" secondItem="x2q-rH-kr4" secondAttribute="centerX" id="nBn-pz-XxF"/>
                             <constraint firstItem="mHP-Tb-b7b" firstAttribute="centerY" secondItem="x2q-rH-kr4" secondAttribute="centerY" id="uIq-Vn-nrQ"/>
                         </constraints>
