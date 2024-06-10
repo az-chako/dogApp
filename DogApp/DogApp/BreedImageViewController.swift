@@ -19,13 +19,6 @@ class BreedImageViewController: UIViewController,UICollectionViewDataSource, UIC
         collectionView.dataSource = self
         collectionView.delegate = self
         
-        if let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
-            let width = (view.frame.size.width - 20) / 3
-            layout.itemSize = CGSize(width: width, height: width)
-            layout.minimumInteritemSpacing = 5
-            layout.minimumLineSpacing = 5
-        }
-        
         if let breed = breed {
             fetchBreedImages(breed: breed)
         }
@@ -64,24 +57,51 @@ class BreedImageViewController: UIViewController,UICollectionViewDataSource, UIC
         return 1
     }
     
-    func collectionView(_ collectionView: UICollectionView,numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return dogImages.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath)
-        if let imageView = cell.contentView.viewWithTag(100) as? UIImageView {
-            let imageUrl = URL(string: dogImages[indexPath.row])
-            DispatchQueue.global().async {
-                if let data = try? Data(contentsOf: imageUrl!) {
-                    DispatchQueue.main.async {
-                        imageView.image = UIImage(data: data)
-                    }
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as! ImageCellCollectionViewCell
+        
+        let imageUrl = URL(string: dogImages[indexPath.row])
+        DispatchQueue.global().async {
+            if let data = try? Data(contentsOf: imageUrl!) {
+                DispatchQueue.main.async {
+                    cell.imageView.image = UIImage(data: data)
+                    // UIImageViewのcontentModeを設定
+                    cell.imageView.contentMode = .scaleAspectFill
+                    cell.imageView.clipsToBounds = true
                 }
             }
         }
         
         return cell
     }
+    
+    // アイテムのサイズを設定するメソッド
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let padding: CGFloat = 10
+        let collectionViewSize = collectionView.frame.size.width - padding
+        
+        let itemWidth = collectionViewSize / 2
+        return CGSize(width: itemWidth, height: itemWidth)
+    }
+    
+    // アイテム間のスペースを設定するメソッド
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 5
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 5
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let storybord = UIStoryboard(name: "Main", bundle: nil)
+        if let imageDisplayVC = storyboard?.instantiateViewController(withIdentifier: "ImageDisplayViewController") as? ImageDisplayViewController {
+            imageDisplayVC.imageUrl = dogImages[indexPath.row]
+            navigationController?.pushViewController(imageDisplayVC, animated: true)
+        }
+    }
 }
-

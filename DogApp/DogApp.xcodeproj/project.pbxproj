@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8BA62E672C169CFB008E6552 /* ImageDisplayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA62E662C169CFB008E6552 /* ImageDisplayViewController.swift */; };
 		8BE435CA2C12ABCC0038B475 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE435C92C12ABCC0038B475 /* AppDelegate.swift */; };
 		8BE435CC2C12ABCC0038B475 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE435CB2C12ABCC0038B475 /* SceneDelegate.swift */; };
 		8BE435CE2C12ABCC0038B475 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE435CD2C12ABCC0038B475 /* ViewController.swift */; };
@@ -19,6 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8BA62E662C169CFB008E6552 /* ImageDisplayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDisplayViewController.swift; sourceTree = "<group>"; };
 		8BE435C62C12ABCC0038B475 /* DogApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DogApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8BE435C92C12ABCC0038B475 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8BE435CB2C12ABCC0038B475 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -68,6 +70,7 @@
 				8BE435DD2C12BE1E0038B475 /* Struct.swift */,
 				8BE435E12C12D1230038B475 /* BreedImageViewController.swift */,
 				8BE435E32C12D1C40038B475 /* ImageCellCollectionViewCell.swift */,
+				8BA62E662C169CFB008E6552 /* ImageDisplayViewController.swift */,
 				8BE435CF2C12ABCC0038B475 /* Main.storyboard */,
 				8BE435D42C12ABCD0038B475 /* LaunchScreen.storyboard */,
 				8BE435D22C12ABCD0038B475 /* Assets.xcassets */,
@@ -149,6 +152,7 @@
 			files = (
 				8BE435E42C12D1C40038B475 /* ImageCellCollectionViewCell.swift in Sources */,
 				8BE435E22C12D1230038B475 /* BreedImageViewController.swift in Sources */,
+				8BA62E672C169CFB008E6552 /* ImageDisplayViewController.swift in Sources */,
 				8BE435DE2C12BE1E0038B475 /* Struct.swift in Sources */,
 				8BE435CE2C12ABCC0038B475 /* ViewController.swift in Sources */,
 				8BE435CA2C12ABCC0038B475 /* AppDelegate.swift in Sources */,

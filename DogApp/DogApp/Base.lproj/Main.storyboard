@@ -56,7 +56,7 @@
         <!--Breed Image View Controller-->
         <scene sceneID="Lqg-O5-6Ob">
             <objects>
-                <viewController id="RQi-vx-Z2L" customClass="BreedImageViewController" customModule="DogApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="RQi-vx-Z2L" customClass="BreedImageViewController" customModule="DogApp" customModuleProvider="target" propertyAccessControl="none" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="lpL-sR-v8D">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -113,6 +113,38 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mSl-2G-Bo4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="981" y="4"/>
+        </scene>
+        <!--Image Display View Controller-->
+        <scene sceneID="013-lh-HdI">
+            <objects>
+                <viewController id="M9A-c1-Jek" customClass="ImageDisplayViewController" customModule="DogApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="x2q-rH-kr4">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="mHP-Tb-b7b">
+                                <rect key="frame" x="98.333333333333329" y="327.66666666666669" width="196.33333333333337" height="196.66666666666669"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="mHP-Tb-b7b" secondAttribute="height" multiplier="1:1" id="kYt-YX-yrE"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="IMU-AK-vZj"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="mHP-Tb-b7b" firstAttribute="width" secondItem="x2q-rH-kr4" secondAttribute="width" multiplier="0.5" id="3jJ-Wr-ll2"/>
+                            <constraint firstItem="mHP-Tb-b7b" firstAttribute="centerX" secondItem="x2q-rH-kr4" secondAttribute="centerX" id="nBn-pz-XxF"/>
+                            <constraint firstItem="mHP-Tb-b7b" firstAttribute="centerY" secondItem="x2q-rH-kr4" secondAttribute="centerY" id="uIq-Vn-nrQ"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="Ngr-xg-xAZ"/>
+                    <connections>
+                        <outlet property="imageView" destination="mHP-Tb-b7b" id="FTm-tw-miF"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cxt-aB-zXJ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1930.534351145038" y="3.5211267605633805"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="A8W-qh-MFu">

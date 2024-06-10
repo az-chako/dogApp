@@ -29,7 +29,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         }
         
         let task = URLSession.shared.dataTask(with: url) {data, response, error in
-            if let error = error {
+            if error != nil {
                 return
             }
             
