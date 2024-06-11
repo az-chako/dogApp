@@ -140,7 +140,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="Ngr-xg-xAZ"/>
                     <connections>
-                        <outlet property="imageView" destination="mHP-Tb-b7b" id="FTm-tw-miF"/>
+                        <outlet property="imageView" destination="mHP-Tb-b7b" id="h68-OZ-eih"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cxt-aB-zXJ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
