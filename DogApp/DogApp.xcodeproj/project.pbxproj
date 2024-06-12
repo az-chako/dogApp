@@ -45,6 +45,33 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8BBE7A092C192BB800290593 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				8BE435E12C12D1230038B475 /* BreedImageViewController.swift */,
+				8BA62E662C169CFB008E6552 /* ImageDisplayViewController.swift */,
+				8BE435E32C12D1C40038B475 /* ImageCellCollectionViewCell.swift */,
+				8BE435CD2C12ABCC0038B475 /* ViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		8BBE7A0A2C192BD100290593 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				8BE435CF2C12ABCC0038B475 /* Main.storyboard */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		8BBE7A0B2C192BDF00290593 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				8BE435DD2C12BE1E0038B475 /* Struct.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		8BE435BD2C12ABCC0038B475 = {
 			isa = PBXGroup;
 			children = (
@@ -66,12 +93,9 @@
 			children = (
 				8BE435C92C12ABCC0038B475 /* AppDelegate.swift */,
 				8BE435CB2C12ABCC0038B475 /* SceneDelegate.swift */,
-				8BE435CD2C12ABCC0038B475 /* ViewController.swift */,
-				8BE435DD2C12BE1E0038B475 /* Struct.swift */,
-				8BE435E12C12D1230038B475 /* BreedImageViewController.swift */,
-				8BE435E32C12D1C40038B475 /* ImageCellCollectionViewCell.swift */,
-				8BA62E662C169CFB008E6552 /* ImageDisplayViewController.swift */,
-				8BE435CF2C12ABCC0038B475 /* Main.storyboard */,
+				8BBE7A0A2C192BD100290593 /* View */,
+				8BBE7A0B2C192BDF00290593 /* Model */,
+				8BBE7A092C192BB800290593 /* Controller */,
 				8BE435D42C12ABCD0038B475 /* LaunchScreen.storyboard */,
 				8BE435D22C12ABCD0038B475 /* Assets.xcassets */,
 				8BE435D72C12ABCD0038B475 /* Info.plist */,

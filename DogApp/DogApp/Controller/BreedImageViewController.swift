@@ -104,6 +104,7 @@ class BreedImageViewController: UIViewController,UICollectionViewDataSource, UIC
         if segue.identifier == "showImageDetail" {
             if let destinationVC = segue.destination as? ImageDisplayViewController, let indexPath = collectionView.indexPathsForSelectedItems?.first  {
                 destinationVC.imageUrl = dogImages[indexPath.row]
+                destinationVC.imageUrls = dogImages
             }
         }
     }

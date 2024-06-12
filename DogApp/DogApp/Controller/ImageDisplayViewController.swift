@@ -11,6 +11,8 @@ class ImageDisplayViewController: UIViewController,UIGestureRecognizerDelegate {
     
     @IBOutlet weak var imageView: UIImageView!
     var imageUrl: String?
+    var imageUrls: [String] = []
+    var currentIndex: Int = 0
     
     private var isZoomed = false
     private var originalCenter: CGPoint?
@@ -20,6 +22,7 @@ class ImageDisplayViewController: UIViewController,UIGestureRecognizerDelegate {
         super.viewDidLoad()
         
         if let imageUrl = imageUrl {
+            currentIndex = imageUrls.firstIndex(of: imageUrl) ?? 0
             displayImage(from: imageUrl)
         }
         
@@ -34,10 +37,17 @@ class ImageDisplayViewController: UIViewController,UIGestureRecognizerDelegate {
         pinchGesture.delegate = self
         imageView.addGestureRecognizer(pinchGesture)
         
-        //初期位置を保存
+        // スワイプジェスチャーを追加
+        let swipeLeftGesture = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipe(_:)))
+        swipeLeftGesture.direction = .left
+        imageView.addGestureRecognizer(swipeLeftGesture)
+        
+        let swipeRightGesture = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipe(_:)))
+        swipeRightGesture.direction = .right
+        imageView.addGestureRecognizer(swipeRightGesture)
+        
+        // 初期位置を保存
         originalCenter = imageView.center
-        
-        
     }
     
     func displayImage(from url: String) {
@@ -52,8 +62,6 @@ class ImageDisplayViewController: UIViewController,UIGestureRecognizerDelegate {
     
     @objc func handleDoubleTap(_ gesture: UITapGestureRecognizer) {
         guard let originalCenter = originalCenter else { return }
-        
-        let pointInView = gesture.location(in: imageView)
         
         UIView.animate(withDuration: 0.3, animations: {
             if self.isZoomed {
@@ -71,19 +79,31 @@ class ImageDisplayViewController: UIViewController,UIGestureRecognizerDelegate {
     }
     
     @objc func handlePinch(_ gesture: UIPinchGestureRecognizer) {
-            guard let view = gesture.view else { return }
-            
-            if gesture.state == .began {
-                originalTransform = view.transform
-                originalCenter = view.center
-            }
-            
-            if let originalTransform = originalTransform {
-                view.transform = originalTransform.scaledBy(x: gesture.scale, y: gesture.scale)
-            }
+        guard let view = gesture.view else { return }
+        
+        if gesture.state == .began {
+            originalTransform = view.transform
+            originalCenter = view.center
         }
         
-        func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-            return true
+        if let originalTransform = originalTransform {
+            view.transform = originalTransform.scaledBy(x: gesture.scale, y: gesture.scale)
         }
+    }
+    
+    @objc func handleSwipe(_ gesture: UISwipeGestureRecognizer) {
+        switch gesture.direction {
+        case .left:
+            currentIndex = (currentIndex + 1) % imageUrls.count
+        case .right:
+            currentIndex = (currentIndex - 1 + imageUrls.count) % imageUrls.count
+        default:
+            break
+        }
+        displayImage(from: imageUrls[currentIndex])
+    }
+    
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
 }
