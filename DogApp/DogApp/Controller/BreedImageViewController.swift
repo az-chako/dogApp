@@ -103,8 +103,8 @@ class BreedImageViewController: UIViewController,UICollectionViewDataSource, UIC
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showImageDetail" {
             if let destinationVC = segue.destination as? ImageDisplayViewController, let indexPath = collectionView.indexPathsForSelectedItems?.first  {
-                destinationVC.imageUrl = dogImages[indexPath.row]
                 destinationVC.imageUrls = dogImages
+                destinationVC.currentIndex = indexPath.row
             }
         }
     }

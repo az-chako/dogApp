@@ -7,10 +7,9 @@
 
 import UIKit
 
-class ImageDisplayViewController: UIViewController,UIGestureRecognizerDelegate {
+class ImageDisplayViewController: UIViewController, UIScrollViewDelegate, UIGestureRecognizerDelegate {
     
-    @IBOutlet weak var imageView: UIImageView!
-    var imageUrl: String?
+    @IBOutlet weak var scrollView: UIScrollView!
     var imageUrls: [String] = []
     var currentIndex: Int = 0
     
@@ -21,57 +20,70 @@ class ImageDisplayViewController: UIViewController,UIGestureRecognizerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let imageUrl = imageUrl {
-            currentIndex = imageUrls.firstIndex(of: imageUrl) ?? 0
-            displayImage(from: imageUrl)
-        }
+        scrollView.delegate = self
+        scrollView.isPagingEnabled = true
+        scrollView.showsHorizontalScrollIndicator = false
+        scrollView.showsVerticalScrollIndicator = false
         
-        // ダブルタップジェスチャーを追加
-        let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap(_:)))
-        doubleTapGesture.numberOfTapsRequired = 2
-        imageView.addGestureRecognizer(doubleTapGesture)
-        imageView.isUserInteractionEnabled = true
-        
-        // ピンチジェスチャーを追加
-        let pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(handlePinch(_:)))
-        pinchGesture.delegate = self
-        imageView.addGestureRecognizer(pinchGesture)
-        
-        // スワイプジェスチャーを追加
-        let swipeLeftGesture = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipe(_:)))
-        swipeLeftGesture.direction = .left
-        imageView.addGestureRecognizer(swipeLeftGesture)
-        
-        let swipeRightGesture = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipe(_:)))
-        swipeRightGesture.direction = .right
-        imageView.addGestureRecognizer(swipeRightGesture)
-        
-        // 初期位置を保存
-        originalCenter = imageView.center
+        setupScrollView()
     }
     
-    func displayImage(from url: String) {
-        DispatchQueue.global().async {
-            if let data = try? Data(contentsOf: URL(string: url)!) {
+    func setupScrollView() {
+        for (index, url) in imageUrls.enumerated() {
+            let imageView = UIImageView()
+            imageView.contentMode = .scaleAspectFit
+            imageView.isUserInteractionEnabled = true
+            
+            loadImageAsync(url: url) { [weak self] image in
+                guard self != nil else { return }
                 DispatchQueue.main.async {
-                    self.imageView.image = UIImage(data: data)
+                    imageView.image = image
                 }
+            }
+            
+            let xPosition = self.view.frame.width * CGFloat(index)
+            let yPosition = (self.view.frame.height - imageView.frame.height) / 2
+            imageView.frame = CGRect(x: xPosition, y: -100, width: self.view.frame.width, height: self.view.frame.height)
+            scrollView.addSubview(imageView)
+            
+            let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap(_:)))
+            doubleTapGesture.numberOfTapsRequired = 2
+            imageView.addGestureRecognizer(doubleTapGesture)
+            
+            let pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(handlePinch(_:)))
+            imageView.addGestureRecognizer(pinchGesture)
+        }
+        
+        scrollView.contentSize = CGSize(width: view.frame.width * CGFloat(imageUrls.count), height: view.frame.height)
+        scrollView.contentOffset = CGPoint(x: view.frame.width * CGFloat(currentIndex), y: 0)
+    }
+    
+    func loadImageAsync(url: String, completion: @escaping (UIImage?) -> Void) {
+        DispatchQueue.global().async {
+            guard let url = URL(string: url), let data = try? Data(contentsOf: url) else {
+                DispatchQueue.main.async {
+                    completion(nil)
+                }
+                return
+            }
+            let image = UIImage(data: data)
+            DispatchQueue.main.async {
+                completion(image)
             }
         }
     }
     
     @objc func handleDoubleTap(_ gesture: UITapGestureRecognizer) {
-        guard let originalCenter = originalCenter else { return }
+        guard let imageView = gesture.view as? UIImageView else { return }
         
         UIView.animate(withDuration: 0.3, animations: {
             if self.isZoomed {
-                self.imageView.transform = .identity
-                self.imageView.center = originalCenter
+                imageView.transform = .identity
+                self.scrollView.contentOffset = CGPoint(x: self.view.frame.width * CGFloat(self.currentIndex), y: 0)
             } else {
                 let scale: CGFloat = 2.0
                 let newTransform = CGAffineTransform(scaleX: scale, y: scale)
-                
-                self.imageView.transform = newTransform
+                imageView.transform = newTransform
             }
         }, completion: { _ in
             self.isZoomed.toggle()
@@ -79,31 +91,37 @@ class ImageDisplayViewController: UIViewController,UIGestureRecognizerDelegate {
     }
     
     @objc func handlePinch(_ gesture: UIPinchGestureRecognizer) {
-        guard let view = gesture.view else { return }
+        guard let imageView = gesture.view else { return }
         
         if gesture.state == .began {
-            originalTransform = view.transform
-            originalCenter = view.center
+            originalTransform = imageView.transform
+            originalCenter = imageView.center
         }
         
         if let originalTransform = originalTransform {
-            view.transform = originalTransform.scaledBy(x: gesture.scale, y: gesture.scale)
+            imageView.transform = originalTransform.scaledBy(x: gesture.scale, y: gesture.scale)
         }
     }
     
-    @objc func handleSwipe(_ gesture: UISwipeGestureRecognizer) {
-        switch gesture.direction {
-        case .left:
-            currentIndex = (currentIndex + 1) % imageUrls.count
-        case .right:
-            currentIndex = (currentIndex - 1 + imageUrls.count) % imageUrls.count
-        default:
-            break
-        }
-        displayImage(from: imageUrls[currentIndex])
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        currentIndex = Int(scrollView.contentOffset.x / scrollView.frame.size.width)
+        loadVisibleImages()
     }
     
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        return true
+    func loadVisibleImages() {
+        for subview in scrollView.subviews {
+            guard let imageView = subview as? UIImageView else { continue }
+            let visibleRect = CGRect(x: scrollView.contentOffset.x, y: scrollView.contentOffset.y, width: scrollView.frame.width, height: scrollView.frame.height)
+            if visibleRect.intersects(imageView.frame) {
+                let index = Int(imageView.frame.origin.x / scrollView.frame.width)
+                let url = imageUrls[index]
+                loadImageAsync(url: url) { [weak self] image in
+                    guard self != nil else { return }
+                    DispatchQueue.main.async {
+                        imageView.image = image
+                    }
+                }
+            }
+        }
     }
 }

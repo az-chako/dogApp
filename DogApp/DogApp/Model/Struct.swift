@@ -13,4 +13,5 @@ struct DogBreed: Codable {
 
 struct DogImage: Codable {
     let message: [String]
+    let status: String
 }
