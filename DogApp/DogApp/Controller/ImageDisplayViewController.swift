@@ -33,18 +33,24 @@ class ImageDisplayViewController: UIViewController, UIScrollViewDelegate, UIGest
             let imageView = UIImageView()
             imageView.contentMode = .scaleAspectFit
             imageView.isUserInteractionEnabled = true
+            imageView.translatesAutoresizingMaskIntoConstraints = false
+            
+            scrollView.addSubview(imageView)
+            
+            // Set Auto Layout constraints for imageView
+            NSLayoutConstraint.activate([
+                imageView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: self.view.frame.width * CGFloat(index)),
+                imageView.widthAnchor.constraint(equalTo: self.view.widthAnchor),
+                imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor),
+                imageView.centerYAnchor.constraint(equalTo: scrollView.centerYAnchor)
+            ])
             
             loadImageAsync(url: url) { [weak self] image in
-                guard self != nil else { return }
+                guard let self = self else { return }
                 DispatchQueue.main.async {
                     imageView.image = image
                 }
             }
-            
-            let xPosition = self.view.frame.width * CGFloat(index)
-            let yPosition = (self.view.frame.height - imageView.frame.height) / 2
-            imageView.frame = CGRect(x: xPosition, y: -100, width: self.view.frame.width, height: self.view.frame.height)
-            scrollView.addSubview(imageView)
             
             let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap(_:)))
             doubleTapGesture.numberOfTapsRequired = 2
